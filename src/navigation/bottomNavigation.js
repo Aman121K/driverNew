@@ -6,6 +6,7 @@ import HomeStack from '../screen/Home/HomeScreen';
 import BookingHistoryScreen from '../screen/Booking/AllBooking';
 import ProfileScreen from '../screen/Profile/ProfileDetails';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Price from "../screen/Price";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from "../utility";
 const Tab = createBottomTabNavigator();
 const BottomTabNavigator = ({navigation}) => {
@@ -20,9 +21,14 @@ const BottomTabNavigator = ({navigation}) => {
           iconName = focused
             ? 'home'
             : 'home';
-        }else if (route.name === 'My Bookings') {
+        }
+        else if (route.name === 'My Bookings') {
           iconName = focused ? 'ios-list' : 'ios-list';
-        }else if (route.name === 'Profile') {
+        }
+        else if (route.name === 'Pric') {
+          iconName = focused ? 'list' : 'list';
+        }
+        else if (route.name === 'Profile') {
           iconName = focused ? 'person' : 'person';
         }
 

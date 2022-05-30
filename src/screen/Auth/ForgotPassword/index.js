@@ -95,9 +95,9 @@ const ForgotPassword = ({navigation}) => {
       </View>
       <View style={styles.ContentView}>
           <ScrollView
-            keyboardShouldPersistTaps="handled"
+            // keyboardShouldPersistTaps="handled"
             contentContainerStyle={{
-              flex: 1,
+              // flex: 1,
               
               //justifyContent: 'center',
               //alignContent: 'center',

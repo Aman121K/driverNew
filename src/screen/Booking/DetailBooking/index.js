@@ -98,7 +98,7 @@ const BookingDetails=({navigation,route})=>{
             <Text style={styles.cellText}>{route.params.paramKey.remark}</Text>
           </Row>
           <Row style={styles.cell}>
-            <Text style={styles.cellText}>Driver Name</Text>
+            <Text style={styles.cellText}></Text>
           </Row>
           {/* <Row style={styles.cell}>
             <Text style={styles.cellText}>Driver Phone</Text>

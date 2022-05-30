@@ -42,18 +42,29 @@ const TempDriverScreen = ({ navigation }) => {
     if (isReportingdate) {
       setReportingdate(date)
     } else if (isreturndate) {
-      console.log("is return date is..", date)
+      console.log("return date", date);
+      console.log("starting date...",reportingdate)
 
       var msDiff = new Date(date).getTime() - new Date(reportingdate).getTime();    //Future date - current date
       var daysTill30June2035 = Math.floor(msDiff / (1000 * 60 * 60 * 24));
-      // console.log("Days is...",parseInt(daysTill30June2035)+1);
+      console.log("Total Dayss...",parseInt(daysTill30June2035));
+      if(totalDays<1){
+        let newDate = parseInt(daysTill30June2035) + parseInt(2)
+        console.log("new .....vip", newDate);
+        setTotalDays(JSON.stringify(newDate))
+        setReturndate(date)
+        // setischeckDate(true);
+        chekDate()
+      }else{
+        let newDate = parseInt(daysTill30June2035) + parseInt(1)
+        console.log("new .....vip", newDate);
+        setTotalDays(JSON.stringify(newDate))
+        setReturndate(date)
+        // setischeckDate(true);
+        chekDate()
+      }
 
-      let newDate = parseInt(daysTill30June2035) + parseInt(2)
-      console.log("new .....vip", newDate);
-      setTotalDays(JSON.stringify(newDate))
-      setReturndate(date)
-      // setischeckDate(true);
-      chekDate()
+     
     }
   }
   const [showReportingDropDown, setshowReportingDropDown] = useState(false);
@@ -125,8 +136,6 @@ const TempDriverScreen = ({ navigation }) => {
   const [showCarDropDown, setshowCarDropDown] = useState(false);
   const [cardetails, setCar] = useState();
   const [carList, setCarList] = useState([]);
-
-
 
   const [showDriverDropDown, setshowDriverDropDown] = useState(false);
   const [driverDetails, setdriverDetails] = useState('');
@@ -260,6 +269,9 @@ const TempDriverScreen = ({ navigation }) => {
 
   const handleSubmitPress = () => {
     setErrortext('');
+    if(!cardetails){
+      alert("please select a vechile")
+    }
     if (!address) {
       alert('Please fill address');
       return;
@@ -295,6 +307,9 @@ const TempDriverScreen = ({ navigation }) => {
     if (!dutytype) {
       alert('Please fill duty type');
       return;
+    }
+    if(!cardetails){
+      alert('please select a vehicle')
     }
     if (dutytype === 'Local') {
       if (!dutyhour) {
@@ -354,7 +369,7 @@ const TempDriverScreen = ({ navigation }) => {
         return;
       }
     }
-    setLoading(true)
+  
     console.log("user id,,,", logedInUserData.user_id)
     var dutytypeNew = 1;
     if (dutytype == 'Local') {
@@ -375,7 +390,7 @@ const TempDriverScreen = ({ navigation }) => {
       locality,
       pincode,
       landmark,
-      cardetails: cardetails.value,
+      cardetails: cardetails.value || "",
       drivertype,
       dutytype: dutytypeNew,
       dutyhour,
@@ -390,7 +405,7 @@ const TempDriverScreen = ({ navigation }) => {
       drop_locality: toLocality,
       no_of_day: totalDays || '0'
     };
-
+    setLoading(true)
     console.log("Test....", payload);
 
     const onSuccess = ({ data }) => {
@@ -492,6 +507,7 @@ const TempDriverScreen = ({ navigation }) => {
                 searchPlaceholder="Search..."
                 value={reportingAddress}
                 onChange={item => {
+                  console.log("login")
                   // setGender(item.value);
                   setReportingAddress(item.value)
                   console.log("vikkkk", item);
@@ -706,45 +722,11 @@ const TempDriverScreen = ({ navigation }) => {
                       {dutyhoursList.length > 0 && dutyhoursList.map((item, index) => {
                         return (
                           <TouchableOpacity style={styles.radioButton} onPress={() => setCustomHours(item)} key={index}>
-
                             <Ionicons name={item.status == true ? 'radio-button-on' : 'radio-button-off-sharp'} size={20} color={'red'} />
-
                             <Text style={{ marginLeft: 10 }}>{item.name} Hrs</Text>
-
                           </TouchableOpacity>)
                       })}
-                      {/* <TouchableOpacity style={styles.radioButton} onPress={() => setDutyHour('4')}>
-                            <Ionicons name={dutyhour === '4' ? 'radio-button-on': 'radio-button-off-sharp'} size={20} color={'red'} />
-
-                            <Text style={{marginLeft:10}}>4 Hrs</Text>
-
-                        </TouchableOpacity>
-                        <TouchableOpacity  style={styles.radioButton} onPress={() => setDutyHour('6')} >
-                            <Ionicons name={dutyhour === '6' ? 'radio-button-on': 'radio-button-off-sharp'} size={20} color={'red'} />
-                            <Text style={{marginLeft:10}}>6 Hrs</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.radioButton} onPress={() => setDutyHour('8')} >
-                            <Ionicons name={dutyhour === '8' ? 'radio-button-on': 'radio-button-off-sharp'} size={20} color={'red'} />
-                            <Text style={{marginLeft:10}}>8 Hrs</Text>
-                        </TouchableOpacity> */}
-
                     </View>
-
-                    {/* <DropDown
-                          label={"To City *"}
-                          mode={"outlined"}
-                          visible={showToCityDropDown}
-                          showDropDown={() => setshowToCityDropDown(true)}
-                          onDismiss={() => setshowToCityDropDown(false)}
-                          value={toCity}
-                          setValue={setToCity}
-                          list={cityList}
-                          dropDownStyle = {{marginTop: 0.1}}
-                          activeColor={'green'}
-                          theme={{ colors: { primary: '#99e8e4',underlineColor:'yellow', accent:'#99e8e4'}}}
-
-                        /> */}
-
                     <Dropdown
                       style={styles.dropdown}
                       placeholderStyle={styles.placeholderStyle}
@@ -760,33 +742,11 @@ const TempDriverScreen = ({ navigation }) => {
                       searchPlaceholder="Search..."
                       value={toCity}
                       onChange={item => {
-                        // setGender(item.value);
-                        // setReportingAddress(item.value)
+                      
                         console.log("vikkkk city is", item);
                         setToCity(item.value)
-
-                        // setisSaveAddress(true)
-                        // setAddress(item.address);
-                        // setPincode(item.zip);
-                        // setLocality(item.locality);
-                        // setLandmark(item.landmark);
                       }}
                     />
-
-
-                    {/* <DropDown
-                label={" To Locality *"}
-                mode={"outlined"}
-                visible={showlocalityDropDown}
-                showDropDown={() => makelocalityArray()}
-                onDismiss={() => setshowlocalityDropDown(false)}
-                value={toLocality}
-                setValue={setTolocality}
-                list={localityList}
-                dropDownStyle={{ marginTop: 0.1 }}
-                activeColor={'green'}
-                theme={{ colors: { primary: '#99e8e4',underlineColor:'yellow', accent:'#99e8e4'}}}
-              /> */}
 
                     <View style={styles.spacerStyle} />
                     <Dropdown
@@ -850,6 +810,7 @@ const TempDriverScreen = ({ navigation }) => {
                         />
                       </View>
                     </View>
+                    <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
                     <View style={styles.SectionStyleBottom}>
                       <DropDown
                         label={"Select Time *"}
@@ -865,7 +826,24 @@ const TempDriverScreen = ({ navigation }) => {
                         theme={{ colors: { primary: '#99e8e4', underlineColor: 'yellow', accent: '#99e8e4' } }}
 
                       />
+                      
                     </View>
+                    <View style={{width:'45%'}}>
+                    <TextInput
+                            mode="outlined"
+                            // style={{height:47}}
+                            label="Total Days"
+                            value={totalDays}
+                            placeholder="Total Days"
+                            theme={{ colors: { primary: '#99e8e4', underlineColor: 'yellow', accent: '#99e8e4' } }}
+                            maxLength={3}
+                            keyboardType='phone-pad'
+                            editable={false}
+                            onChangeText={(e) => setTotalDays(e)}
+                          />
+                    </View>
+                    </View>
+                    
 
                   </View>
                   :
@@ -1067,7 +1045,7 @@ const TempDriverScreen = ({ navigation }) => {
               <TextInput
                 mode="outlined"
                 label={"Remarks"}
-                // style={{height:47}}
+            
                 value={remarks}
                 placeholder="Enter Address"
                 theme={{ colors: { primary: '#99e8e4', underlineColor: 'yellow', accent: '#99e8e4' } }}
@@ -1082,7 +1060,7 @@ const TempDriverScreen = ({ navigation }) => {
                 onPress={handleSubmitPress}
               //onPress={() => navigation.navigate('HomeScreen')}
               >
-                <Text style={styles.buttonTextStyle}>Save</Text>
+                <Text style={styles.buttonTextStyle}>Book Now</Text>
               </TouchableOpacity>
               <DatePicker
                 modal
@@ -1093,6 +1071,7 @@ const TempDriverScreen = ({ navigation }) => {
                 date={reportingdate}
                 onConfirm={(date) => {
                   setDateOpen(false)
+                  console.log("Return date choose may...",date)
                   setDate(date)
 
 
@@ -1133,7 +1112,7 @@ const styles = StyleSheet.create({
   },
   DateTimeContent: {
     flexDirection: 'row',
-    // justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     //backgroundColor:'red',
 
   },

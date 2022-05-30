@@ -62,6 +62,8 @@ const Login = ({navigation}) => {
             // Alert.alert('Oops!', error.message);
             // Alert.alert('Success!', data.message);
           }, 100);
+          setUserPhone('');
+          setUserPassword('');
           navigation.navigate('BottomTab')
      }else{
           setTimeout(() => {
@@ -129,9 +131,9 @@ const Login = ({navigation}) => {
       <View style={styles.ContentView}>
      
           <ScrollView
-            keyboardShouldPersistTaps="handled"
+            // keyboardShouldPersistTaps="handled"
             contentContainerStyle={{
-              flex: 1,
+              // flex: 1,
               
               //justifyContent: 'center',
               //alignContent: 'center',
