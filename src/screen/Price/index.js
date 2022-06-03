@@ -9,5 +9,4 @@ const Price = () => {
         </View>
   )
 }
-
 export default Price
